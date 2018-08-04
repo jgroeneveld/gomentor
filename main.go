@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"os"
+	"log"
 )
 
 type Manager struct {
@@ -25,6 +27,11 @@ type PageInfo struct {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+
 	e := echo.New()
 
 	e.Use(middleware.Logger())
@@ -34,7 +41,7 @@ func main() {
 	managers.GET("", listManagers)
 	managers.GET("/:id", getManager)
 
-	e.Logger.Fatal(e.Start(":8000"))
+	e.Logger.Fatal(e.Start(":" + port))
 }
 
 func listManagers(ctx echo.Context) error {
