@@ -2,6 +2,8 @@
 
 A version of mentor in go.
 
+heroku: http://losmentor.herokuapp.com/
+
 ## Libraries used
 
 - `github.com/jgroeneveld/schema` for JSON testing
