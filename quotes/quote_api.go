@@ -11,12 +11,12 @@ type quoteApiResponse struct {
 	QuoteAuthor string `json:"quoteAuthor"`
 }
 
-func fetchRandomQuote() (*quoteApiResponse, error) {
+func fetchRandomQuote(fetcher JSONFetcher) (*quoteApiResponse, error) {
 	url := "https://api.forismatic.com/api/1.0/?method=getQuote&key=457635&format=json&lang=en"
 
 	quoteResponse := &quoteApiResponse{}
 
-	err := getJSON(url, quoteResponse)
+	err := fetcher.Get(url, quoteResponse)
 	if err != nil {
 		return nil, err
 	}
@@ -24,15 +24,25 @@ func fetchRandomQuote() (*quoteApiResponse, error) {
 	return quoteResponse, nil
 }
 
-func getJSON(url string, target interface{}) error {
-	client := &http.Client{}
+type JSONFetcher interface {
+	Get(url string, out interface{}) error
+}
 
+type JSONFetcherImpl struct {
+	Client *http.Client
+}
+
+func NewJSONFetcher() *JSONFetcherImpl {
+	return &JSONFetcherImpl{Client: &http.Client{}}
+}
+
+func (fetcher *JSONFetcherImpl) Get(url string, out interface{}) error {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return err
 	}
 
-	resp, err := client.Do(req)
+	resp, err := fetcher.Client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -42,7 +52,7 @@ func getJSON(url string, target interface{}) error {
 		return err
 	}
 
-	err = json.Unmarshal(body, target)
+	err = json.Unmarshal(body, out)
 	if err != nil {
 		return err
 	}

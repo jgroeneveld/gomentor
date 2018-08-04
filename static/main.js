@@ -50,8 +50,12 @@ function jsonRequest(url, callback) {
     xhttp.setRequestHeader("Content-type", "application/json");
 
     xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            callback(JSON.parse(xhttp.responseText));
+        if (xhttp.readyState == 4) {
+            if (xhttp.status == 200) {
+                callback(JSON.parse(xhttp.responseText));
+            } else {
+                console.log("error. status: " + xhttp.status + ' - body: ' + xhttp.responseText)
+            }
         }
     };
 

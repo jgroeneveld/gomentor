@@ -5,7 +5,9 @@ import (
 )
 
 func RandomQuote(ctx echo.Context) error {
-	quoteResponse, err := fetchRandomQuote()
+	fetcher := NewJSONFetcher()
+
+	quoteResponse, err := fetchRandomQuote(fetcher)
 	if err != nil {
 		return err
 	}
