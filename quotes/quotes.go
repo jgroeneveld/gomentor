@@ -2,12 +2,19 @@ package quotes
 
 import (
 	"github.com/labstack/echo"
+	"github.com/jgroeneveld/losmentor/fetching"
 )
 
-func RandomQuote(ctx echo.Context) error {
-	fetcher := NewJSONFetcher()
+type Dependencies interface {
+	JSONFetcher() fetching.JSONFetcher
+}
 
-	quoteResponse, err := fetchRandomQuote(fetcher)
+type RandomQuoteController struct {
+	Dependencies
+}
+
+func (c *RandomQuoteController) Handle(ctx echo.Context) error {
+	quoteResponse, err := fetchRandomQuote(c.JSONFetcher())
 	if err != nil {
 		return err
 	}

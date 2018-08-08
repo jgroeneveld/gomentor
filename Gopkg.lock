@@ -10,6 +10,25 @@
   version = "v3.2.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:91d8e6018d2be22cdbd4a19680087d8a19c796456bc837c79f5a8440e4b36186"
+  name = "github.com/jgroeneveld/schema"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "33b60056ca77b0a2ec50b20f96ec644e2047a347"
+
+[[projects]]
+  branch = "master"
+  digest = "1:f7c0c7e7144f894e135705c1452cf85a5beb67751341af21cc03dd77503c9604"
+  name = "github.com/jgroeneveld/trial"
+  packages = [
+    "assert",
+    "th",
+  ]
+  pruneopts = "UT"
+  revision = "f65f8f1562e7127a63655ac66b67669261f4948a"
+
+[[projects]]
   digest = "1:87f801436ec4799e0e043ab348ff9f3e95b1b3761138158f0950ac67695cc272"
   name = "github.com/labstack/echo"
   packages = [
@@ -50,6 +69,14 @@
   version = "v0.0.3"
 
 [[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
   branch = "master"
   digest = "1:c468422f334a6b46a19448ad59aaffdfc0a36b08fdcc1c749a0b29b6453d7e59"
   name = "github.com/valyala/bytebufferpool"
@@ -88,8 +115,12 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/jgroeneveld/schema",
+    "github.com/jgroeneveld/trial/assert",
+    "github.com/jgroeneveld/trial/th",
     "github.com/labstack/echo",
     "github.com/labstack/echo/middleware",
+    "github.com/pkg/errors",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

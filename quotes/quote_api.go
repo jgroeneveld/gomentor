@@ -1,17 +1,13 @@
 package quotes
 
-import (
-	"net/http"
-	"io/ioutil"
-	"encoding/json"
-)
+import "github.com/jgroeneveld/losmentor/fetching"
 
 type quoteApiResponse struct {
 	QuoteText   string `json:"quoteText"`
 	QuoteAuthor string `json:"quoteAuthor"`
 }
 
-func fetchRandomQuote(fetcher JSONFetcher) (*quoteApiResponse, error) {
+func fetchRandomQuote(fetcher fetching.JSONFetcher) (*quoteApiResponse, error) {
 	url := "https://api.forismatic.com/api/1.0/?method=getQuote&key=457635&format=json&lang=en"
 
 	quoteResponse := &quoteApiResponse{}
@@ -24,38 +20,4 @@ func fetchRandomQuote(fetcher JSONFetcher) (*quoteApiResponse, error) {
 	return quoteResponse, nil
 }
 
-type JSONFetcher interface {
-	Get(url string, out interface{}) error
-}
 
-type JSONFetcherImpl struct {
-	Client *http.Client
-}
-
-func NewJSONFetcher() *JSONFetcherImpl {
-	return &JSONFetcherImpl{Client: &http.Client{}}
-}
-
-func (fetcher *JSONFetcherImpl) Get(url string, out interface{}) error {
-	req, err := http.NewRequest(http.MethodGet, url, nil)
-	if err != nil {
-		return err
-	}
-
-	resp, err := fetcher.Client.Do(req)
-	if err != nil {
-		return err
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(body, out)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
